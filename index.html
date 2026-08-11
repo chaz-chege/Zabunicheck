@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zabuni Check — Never lose a tender to paperwork</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c2a3a;
+    --ink-soft: #445266;
+    --paper: #eceae2;
+    --paper-card: #f5f3ec;
+    --line: #c9c5b6;
+    --stamp-red: #a3312a;
+    --stamp-red-dark: #7c231d;
+    --approve-green: #3f5b45;
+    --focus: #2f5fa3;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  header.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .brand span { color: var(--stamp-red); }
+
+  .ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding-top: 56px;
+    padding-bottom: 40px;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--stamp-red-dark);
+    margin: 0 0 18px;
+  }
+
+  h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 700;
+    font-size: clamp(32px, 6vw, 50px);
+    line-height: 1.12;
+    margin: 0 0 22px;
+    max-width: 14ch;
+  }
+
+  .lede {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 36px;
+  }
+
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Stamp signature element ---------- */
+  .stamp-stage {
+    position: relative;
+    min-height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .stamp {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 178px;
+    transform: rotate(-9deg) scale(2.4);
+    opacity: 0;
+    filter: blur(1px);
+    animation: stamp-hit 0.55s 0.35s cubic-bezier(.2,.9,.3,1.2) forwards;
+  }
+
+  @keyframes stamp-hit {
+    0%   { opacity: 0; transform: rotate(-9deg) scale(2.4); filter: blur(1px); }
+    55%  { opacity: 1; transform: rotate(-9deg) scale(0.92); filter: blur(0); }
+    75%  { transform: rotate(-9deg) scale(1.05); }
+    100% { opacity: 1; transform: rotate(-9deg) scale(1); }
+  }
+
+  .stamp svg { width: 100%; height: auto; display: block; }
+
+  .stamp-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-left: 190px;
+    max-width: 24ch;
+    opacity: 0;
+    animation: fade-in 0.5s 0.95s forwards;
+  }
+
+  @keyframes fade-in { to { opacity: 1; } }
+
+  /* ---------- Checklist mock ---------- */
+  .doc-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 28px 28px 22px;
+    margin: 44px 0;
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .doc-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+
+  .checklist { list-style: none; margin: 0; padding: 0; }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .mark {
+    flex: 0 0 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .mark.ok { color: var(--approve-green); }
+  .mark.miss { color: var(--stamp-red); }
+
+  .item-label small {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    margin-top: 2px;
+  }
+
+  /* ---------- Pain section ---------- */
+  .pain {
+    padding: 12px 0 8px;
+  }
+
+  .pain h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 14px;
+  }
+
+  .pain p {
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 56ch;
+    margin: 0 0 14px;
+  }
+
+  /* ---------- Waitlist form ---------- */
+  .waitlist {
+    margin: 52px 0 64px;
+    padding: 32px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 3px;
+  }
+
+  .waitlist .eyebrow2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c7b79a;
+    margin: 0 0 10px;
+  }
+
+  .waitlist h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  .waitlist p {
+    color: #c3cad4;
+    font-size: 15px;
+    max-width: 48ch;
+    margin: 0 0 24px;
+  }
+
+  form { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  input[type="email"] {
+    flex: 1 1 220px;
+    padding: 13px 14px;
+    border: 1px solid #3a4a5f;
+    border-radius: 2px;
+    background: #24384f;
+    color: #f5f3ec;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+  }
+
+  input[type="email"]::placeholder { color: #8695a8; }
+
+  input[type="email"]:focus,
+  button:focus {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  select {
+    padding: 13px 14px;
+    border: 1px solid #3a4a5f;
+    border-radius: 2px;
+    background: #24384f;
+    color: #f5f3ec;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+  }
+
+  button {
+    padding: 13px 22px;
+    background: var(--stamp-red);
+    color: #f5f3ec;
+    border: none;
+    border-radius: 2px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  button:hover { background: var(--stamp-red-dark); }
+
+  .fine-print {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: #8695a8;
+    margin-top: 14px;
+  }
+
+  .form-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    margin-top: 14px;
+    display: none;
+  }
+
+  .form-status.show { display: block; }
+  .form-status.ok { color: #9fd3a8; }
+  .form-status.err { color: #e39a94; }
+
+  /* ---------- Footer ---------- */
+  footer.wrap {
+    padding: 24px 24px 48px;
+    border-top: 1px solid var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .stamp { width: 130px; }
+    .stamp-caption { margin-left: 148px; font-size: 11px; }
+    .waitlist { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="wrap">
+    <div class="brand">Zabuni<span>Check</span></div>
+    <div class="ref">REF/KE/2026</div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <p class="eyebrow">Before you submit</p>
+      <h1>Don't lose a tender over a missing stamp.</h1>
+      <p class="lede">Upload the tender document. Get every mandatory requirement and every document you need to attach — <strong>before</strong> you submit, not after you've been disqualified.</p>
+
+      <div class="stamp-stage">
+        <div class="stamp" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="92" fill="none" stroke="#a3312a" stroke-width="5"/>
+            <circle cx="100" cy="100" r="78" fill="none" stroke="#a3312a" stroke-width="2"/>
+            <path id="stampCircleTop" d="M 30 100 A 70 70 0 0 1 170 100" fill="none"/>
+            <text font-family="'IBM Plex Mono', monospace" font-size="13" font-weight="600" fill="#a3312a" letter-spacing="2">
+              <textPath href="#stampCircleTop" startOffset="50%" text-anchor="middle">DISQUALIFIED</textPath>
+            </text>
+            <path id="stampCircleBottom" d="M 170 100 A 70 70 0 0 1 30 100" fill="none"/>
+            <text font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="600" fill="#a3312a" letter-spacing="2">
+              <textPath href="#stampCircleBottom" startOffset="50%" text-anchor="middle">ONE DOCUMENT MISSING</textPath>
+            </text>
+            <line x1="60" y1="100" x2="140" y2="100" stroke="#a3312a" stroke-width="3"/>
+            <line x1="100" y1="60" x2="100" y2="140" stroke="#a3312a" stroke-width="3" opacity="0.6"/>
+          </svg>
+        </div>
+        <p class="stamp-caption">This is how most rejections actually happen — not on price, on paperwork.</p>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-title">
+          <span>Tender No. KE/CTY/0472/2026</span>
+          <span>Requirement check</span>
+        </div>
+        <ul class="checklist">
+          <li><span class="mark ok">✓</span><span class="item-label">Valid tax compliance certificate</span></li>
+          <li><span class="mark ok">✓</span><span class="item-label">Certificate of incorporation (CR12)</span></li>
+          <li><span class="mark miss">✕</span><span class="item-label">Bid security / bid bond<small>Required — not found in your upload</small></span></li>
+          <li><span class="mark ok">✓</span><span class="item-label">AGPO certificate (if applicable)</span></li>
+          <li><span class="mark miss">✕</span><span class="item-label">Signed confidential business questionnaire<small>Required — not found in your upload</small></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="pain wrap">
+      <h2>Good work gets thrown out over one form.</h2>
+      <p>Tender documents are long, dense, and every requirement is scattered across different sections. Miss one — a stamp, a signature, a certificate — and you're disqualified before anyone looks at your price or your quality.</p>
+      <p>We're building a simple tool: upload the tender PDF, get an instant, plain checklist of everything required and everything you're missing. Nothing more complicated than that, first.</p>
+    </section>
+
+    <section class="wrap">
+      <div class="waitlist">
+        <p class="eyebrow2">Get early access</p>
+        <h3>Be first to try it on your next tender</h3>
+        <p>We're testing this with a small group of real bidders before opening it up. Leave your email and tell us a little about what you bid on — we'll reach out directly.</p>
+
+        <form id="waitlistForm">
+          <input type="email" name="email" placeholder="you@company.co.ke" required aria-label="Email address">
+          <select name="bidder_type" aria-label="What do you bid on">
+            <option value="" disabled selected>What do you usually bid on?</option>
+            <option value="national">National government tenders</option>
+            <option value="county">County tenders</option>
+            <option value="ngo_donor">NGO / donor-funded tenders</option>
+            <option value="consultant">I bid-write for other companies</option>
+            <option value="other">Other</option>
+          </select>
+          <button type="submit">Join the waitlist</button>
+        </form>
+        <p class="form-status" id="formStatus"></p>
+        <p class="fine-print">No spam. One email when it's ready for you to try.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <span>Zabuni Check — built in Nairobi</span>
+    <span>zabuni (Swahili): tender, bid</span>
+  </footer>
+
+  <script>
+    // Replace YOUR_FORM_ID with a Formspree (or similar) endpoint — see notes.
+    const ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+    const form = document.getElementById('waitlistForm');
+    const status = document.getElementById('formStatus');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+
+        if (res.ok) {
+          status.textContent = "You're on the list — we'll be in touch.";
+          status.className = 'form-status show ok';
+          form.reset();
+        } else {
+          throw new Error('bad response');
+        }
+      } catch (err) {
+        status.textContent = "Something went wrong. Try again, or email us directly.";
+        status.className = 'form-status show err';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Join the waitlist';
+      }
+    });
+  </script>
+
+</body>
+</html>
